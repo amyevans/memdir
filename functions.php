@@ -330,9 +330,9 @@
 	add_action('wp_logout',create_function('','wp_redirect(home_url());exit();'));
 
 
-	/* OBTENER MIEMBROS DE JSON API
+	/* GET MEMBERS JSON API
 	================================================== */
-	function getMiembrosApi(){
+	function getMembersApi(){
 		$username = "naifa_texas";
 		$password = "REDACTED";
 		$url = "https://securex.naifa.org/api/v1/members";
@@ -363,49 +363,49 @@
 		}
 	}
 
-	/* CARGAR MIEMBROS
+	/* LOAD MEMBERS
 	================================================== */
-	function cargarMiembros(){
-		$t = get_transient('miembros');
+	function findMembers(){
+		$t = get_transient('members');
 		if (!$t) {
-			$miembros = getMiembrosApi();
-			$companias = array();
-			$ciudades = array();
-			$apellidos = array();
+			$members = getMembersApi();
+			$companies = array();
+			$cities = array();
+			$lastnames = array();
 			$ids = array();
-			foreach ($miembros as $miembro) {
-				if ($miembro->STATE_PROVINCE == 'TX'){
-					if (!$ids[$miembro->ID]) {
-						$ids[$miembro->ID] = array();
+			foreach ($members as $member) {
+				if ($member->STATE_PROVINCE == 'TX'){
+					if (!$ids[$member->ID]) {
+						$ids[$member->ID] = array();
 					}
-					$ids[$miembro->ID][] = $miembro;
+					$ids[$member->ID][] = $member;
 
-					if (!$ciudades[$miembro->CITY]) {
-						$ciudades[$miembro->CITY] = array();
+					if (!$cities[$member->CITY]) {
+						$cities[$member->CITY] = array();
 					}
-					$ciudades[$miembro->CITY][] = $miembro->ID;
+					$cities[$member->CITY][] = $member->ID;
 
-					if (!$companias[$miembro->COMPANY]) {
-						$companias[$miembro->COMPANY] = array();
+					if (!$companies[$member->COMPANY]) {
+						$companies[$member->COMPANY] = array();
 					}
-					$companias[$miembro->COMPANY][] = $miembro->ID;
+					$companies[$member->COMPANY][] = $member->ID;
 
-					if (!$apellidos[$miembro->LAST_NAME]) {
-						$apellidos[$miembro->LAST_NAME] = array();
+					if (!$lastnames[$member->LAST_NAME]) {
+						$lastnames[$member->LAST_NAME] = array();
 					}
-					$apellidos[$miembro->LAST_NAME][] = $miembro->ID;
+					$lastnames[$member->LAST_NAME][] = $member->ID;
 				}
 			}	
-			$arreglo = array();
-			$arreglo['ids'] = $ids;
-			$arreglo['ciudades'] = $ciudades;
-			$arreglo['companias'] = $companias;
-			$arreglo['apellidos'] = $apellidos;
-			$transient = 'miembros';
-			$value = $arreglo;
-			$tiempo = 60 * 60 * 24;
-			set_transient($transient, $value, $tiempo);
-			$t = get_transient('miembros');
+			$arrangement = array();
+			$arrangement['ids'] = $ids;
+			$arrangement['cities'] = $cities;
+			$arrangement['companies'] = $companies;
+			$arrangement['lastnames'] = $lastnames;
+			$transient = 'members';
+			$value = $arrangement;
+			$time = 60 * 60 * 24;
+			set_transient($transient, $value, $time);
+			$t = get_transient('members');
 		}
 		return $t;
 	}

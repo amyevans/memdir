@@ -1,23 +1,23 @@
 <?php
-// $miembros = cargarMiembros();
+// $members = findMembers();
 ?>
 <div id="search">
 	<form medthod="POST" action="" id="search-form">
-		<input type="radio" name="by" value="city-company-radio" checked>&nbspCity, Last Name and Company &nbsp&nbsp|&nbsp&nbsp
-		<input type="radio" name="by" value="id-radio" >&nbspID<br><br>
+		<input type="radio" name="by" value="city-company-radio" checked>&nbsp;City, Last Name and Company &nbsp;&nbsp;|&nbsp;&nbsp;
+		<input type="radio" name="by" value="id-radio" >&nbsp;ID<br><br>
 		<span id="require-id" style="display:none;">Please, complete this field.</span>
 		<span id="require-city-company" style="display:none;">Please, complete at least one field.</span>
 		<div class="div-city-company">
 			City<br>
-			<input type="text" id="city" nombre="city" autofocus="true"><br>
+			<input type="text" id="city" name="city" autofocus="true"><br>
 			Last Name
-			<input type="text" id="lastname" nombre="lastname">
+			<input type="text" id="lastname" name="lastname">
 			Company
-			<input type="text" id="company" nombre="company"><br>
+			<input type="text" id="company" name="company"><br>
 		</div>			
 		<div class="div-id" style="display:none;">
 			ID<br>
-			<input type="text" id="id" nombre="id"> 
+			<input type="text" id="id" name="id"> 
 		</div>
 		<input type="submit" value="Continue">
 	</form>
@@ -26,20 +26,20 @@
 
 <script>
 
-//--CANTIDAD A MOSTRAR CON EL BOTON "MORE"
-var cantidadMore = 5;
+//--NUMBER OF RESULTS TO SHOW WITH "MORE"
+var moreQty = 5;
 
 var uri = 'http://naifa-texas.org';
 
-function validarCampos(){
+function validateFields(){
 	jQuery("#require-id").hide();
 	jQuery("#require-city-company").hide();
-	var seleccionado = jQuery('input[name=by]:checked', '#search-form').val();
+	var selected = jQuery('input[name=by]:checked', '#search-form').val();
 	var inputId = jQuery("#id").val();
 	var inputCity = jQuery("#city").val();
 	var inputCompany = jQuery("#company").val();
 	var inputLastName = jQuery("#lastname").val();
-	if (seleccionado == 'id-radio') {
+	if (selected == 'id-radio') {
 		if (inputId == '') {
 			jQuery("#require-id").fadeIn();
 			return false;
@@ -59,8 +59,8 @@ jQuery(document).ready(function() {
 	jQuery("input[name=by]").change(function() {
 		jQuery("#require-id").hide();
 		jQuery("#require-city-company").hide();
-		var seleccionado = jQuery('input[name=by]:checked', '#search-form').val();
-		if (seleccionado == 'id-radio') {
+		var selected = jQuery('input[name=by]:checked', '#search-form').val();
+		if (selected == 'id-radio') {
 			jQuery(".div-city-company").hide();
 			jQuery("#city").val('');
 			jQuery("#company").val('');	
@@ -79,12 +79,12 @@ jQuery(document).ready(function() {
 
 	jQuery(document).on("submit", "#search-form", function (e) {
 		e.preventDefault();
-		if (validarCampos()){
-			var seleccionado = jQuery('input[name=by]:checked', '#search-form').val();
-			if (seleccionado == 'id-radio'){
+		if (validateFields()){
+			var selected = jQuery('input[name=by]:checked', '#search-form').val();
+			if (selected == 'id-radio'){
 				jQuery.ajax({
 					data: {id: jQuery("#id").val()},
-					url: uri + '/wp-content/themes/dante/includes/cargarMiembrosTabla.php',
+					url: uri + '/wp-content/themes/dante/includes/findMembersTable.php',
 					type: 'post',
 					beforeSend: function () {
 						jQuery("#result").html('Searching...');
@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
 			else{
 				jQuery.ajax({
 					data: {city: jQuery("#city").val(), company: jQuery("#company").val(), lastname: jQuery("#lastname").val()},
-					url: uri + '/wp-content/themes/dante/includes/cargarMiembrosTabla.php',
+					url: uri + '/wp-content/themes/dante/includes/findMembersTable.php',
 					type: 'post',
 					beforeSend: function () {
 						jQuery("#result").html('Searching...');
@@ -114,7 +114,7 @@ jQuery(document).ready(function() {
 jQuery(document).on("click", "#more", function () {
 	var i=1;
 	jQuery(".hidden-tr").each(function () {
-		if (i<(cantidadMore+1)) {
+		if (i<(moreQty+1)) {
 			jQuery(this).removeClass('hidden-tr');
 			jQuery(this).fadeIn();
 			if (!jQuery(".hidden-tr").length) {
@@ -128,7 +128,7 @@ jQuery(document).on("click", "#more", function () {
 	});
 });
 
-//--SOLO NUMEROS ID
+//--ID NUMBERS ONLY
 jQuery(document).ready(function () {
 	jQuery("#id").keydown(function (e) {
         // Allow: backspace, delete, tab, escape, enter
