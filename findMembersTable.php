@@ -149,7 +149,7 @@ else{
 			$show = 'style=display:none; class="hidden-tr"';
 		} ?>			 
 		<tr <?php echo $show; ?>>					
-			<td>&nbsp;&nbsp;<strong><?php echo $member->FULL_NAME; ?></strong><?php if ($member->TITLE != '') {echo '  |  '.$member->TITLE;} ?><br>
+			<td>&nbsp;&nbsp;<strong><?php echo $member->FULL_NAME; ?></strong><?php if ($member->TITLE != '') {echo '  |  '.$member->TITLE;} ?><?php if ($member->COMPANY != '') {echo '  |  '.$member->COMPANY;} ?><br>
 			&nbsp;&nbsp; <img src="<?php bloginfo('template_directory'); ?>/images/w.png" alt="<?php echo $member->CITY; ?>" height="22" width="23"> <?php echo $member->ADDRESS_1; ?><?php if ($member->ADDRESS_2 != '') {echo '  |  '.$member->ADDRESS_2;} ?>  |  <?php echo $member->CITY; ?>,  <?php echo $member->STATE_PROVINCE; ?>  <?php echo $member->ZIP; ?><br>
 			&nbsp;&nbsp; <img src="<?php bloginfo('template_directory'); ?>/images/m.png" alt="<?php echo $member->EMAIL; ?>" height="22" width="23"> <?php echo $member->EMAIL; ?><br>
 			&nbsp;&nbsp; <img src="<?php bloginfo('template_directory'); ?>/images/p.png" alt="<?php echo $member->WORK_PHONE; ?> " height="22" width="23"> <?php echo $member->WORK_PHONE; ?> <?php if($member->FAX != '') {echo '  |  <img src=http://naifa-texas.org/wp-content/themes/dante/images/f.png height=22 width=23>  '.$member->FAX;} ?></td>
@@ -157,6 +157,7 @@ else{
 
 		<?php }	?>
 	</table>
+	<br>
 	&nbsp;&nbsp;Total Count: <?php echo $qty ?>
 	<?php
 	if ($qty > $qtyToShow) {
